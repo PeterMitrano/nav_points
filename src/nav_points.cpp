@@ -34,7 +34,11 @@ NavPoints::NavPoints() : server_("nav_points") {
 void NavPoints::onClick(const visualization_msgs::InteractiveMarkerFeedbackConstPtr &f)
 {
   if (f->event_type == visualization_msgs::InteractiveMarkerFeedback::MOUSE_UP){
-    goal_pub_.publish(f->pose);
+    geometry_msgs::PoseStamped goal;
+    goal.header.stamp = ros::Time::now();
+    goal.header.frame_id = "map";
+    goal.pose = f->pose;
+    goal_pub_.publish(goal);
   }
 }
 
@@ -44,24 +48,29 @@ void NavPoints::addMarkers()
   {
     server_.insert(createMarker(pose), boost::bind(&NavPoints::onClick, this, _1));
   }
+
+  server_.applyChanges();
 }
 
 visualization_msgs::InteractiveMarker NavPoints::createMarker(geometry_msgs::PoseStamped pose)
 {
   visualization_msgs::InteractiveMarker int_marker;
   int_marker.header.frame_id = pose.header.frame_id;
+  int_marker.pose = pose.pose;
+  int_marker.pose.position.z += 0.01; //a little off the ground.
   int_marker.scale = 1;
-  int_marker.name = "map";
+  char buff[20];
+  snprintf(buff, 20, "pt_%2.2f_%2.2f", pose.pose.position.x, pose.pose.position.y);
+  int_marker.name = buff;
 
   visualization_msgs::InteractiveMarkerControl control;
   control.interaction_mode = visualization_msgs::InteractiveMarkerControl::BUTTON;
-  control.name = "button";
 
   visualization_msgs::Marker shape;
   shape.type = visualization_msgs::Marker::ARROW;
-  shape.scale.x = 0.1;
-  shape.scale.z = 0.001;
-  shape.scale.y = 0.02;
+  shape.scale.x = 0.5;
+  shape.scale.z = 0.01;
+  shape.scale.y = 0.1;
   shape.color.r=0;
   shape.color.g=0.5;
   shape.color.b=0.25;
