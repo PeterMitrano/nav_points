@@ -1,0 +1,4 @@
+nav_points: [
+  {x: 0, y: 0, theta: 0},
+  {x: 2, y: 0, theta: 3.1415926},
+]

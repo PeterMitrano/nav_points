@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>nav_points</name>
+  <version>0.0.0</version>
+  <description>Read a list of poses from a yaml config and add clickable markers in rviz</description>
+
+  <maintainer email="mitranopeter@gmail.com">peter</maintainer>
+
+  <license>WTFPL</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>interactive_markers</depend>
+  <depend>roscpp</depend>
+  <depend>visualization_msgs</depend>
+
+</package>
