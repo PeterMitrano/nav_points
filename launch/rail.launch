@@ -1,0 +1,5 @@
+<launch>
+  <node name="nav_points" type="nav_points" pkg="nav_points">
+    <rosparam command="load" file="$(find nav_points)/config/rail_pts.yaml"/>
+  </node>
+</launch>
