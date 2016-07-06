@@ -1,4 +1,4 @@
-# Nav Points
+# Nav Points [![Build Status](https://travis-ci.org/PeterMitrano/nav_points.svg?branch=master)](https://travis-ci.org/PeterMitrano/nav_points)
 
 Nav Points was made because settings repeatable goals for navigation in rviz is an obvious need. Nav Points works putting interactive markers in rviz at specific locations. When you click on the marker, it sends a goal, on the `/move_base_simple/goal` topic by default (but you can change that).
 
