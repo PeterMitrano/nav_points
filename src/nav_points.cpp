@@ -68,9 +68,9 @@ visualization_msgs::InteractiveMarker NavPoints::createMarker(geometry_msgs::Pos
 
   visualization_msgs::Marker shape;
   shape.type = visualization_msgs::Marker::ARROW;
-  shape.scale.x = 0.5;
+  shape.scale.x = 0.9;
   shape.scale.z = 0.01;
-  shape.scale.y = 0.1;
+  shape.scale.y = 0.3;
   shape.color.r=0;
   shape.color.g=0.5;
   shape.color.b=0.25;
