@@ -44,15 +44,17 @@ void NavPoints::onClick(const visualization_msgs::InteractiveMarkerFeedbackConst
 
 void NavPoints::addMarkers()
 {
+  int i=0;
   for (geometry_msgs::PoseStamped pose: points_)
   {
-    server_.insert(createMarker(pose), boost::bind(&NavPoints::onClick, this, _1));
+    i++;
+    server_.insert(createMarker(pose, std::string("loc:") + std::to_string(i)), boost::bind(&NavPoints::onClick, this, _1));
   }
 
   server_.applyChanges();
 }
 
-visualization_msgs::InteractiveMarker NavPoints::createMarker(geometry_msgs::PoseStamped pose)
+visualization_msgs::InteractiveMarker NavPoints::createMarker(geometry_msgs::PoseStamped pose, std::string visible_description)
 {
   visualization_msgs::InteractiveMarker int_marker;
   int_marker.header.frame_id = pose.header.frame_id;
@@ -62,6 +64,7 @@ visualization_msgs::InteractiveMarker NavPoints::createMarker(geometry_msgs::Pos
   char buff[20];
   snprintf(buff, 20, "pt_%2.2f_%2.2f", pose.pose.position.x, pose.pose.position.y);
   int_marker.name = buff;
+  int_marker.description = visible_description;
 
   visualization_msgs::InteractiveMarkerControl control;
   control.interaction_mode = visualization_msgs::InteractiveMarkerControl::BUTTON;

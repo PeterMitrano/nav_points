@@ -18,7 +18,7 @@ private:
   void loadPoints();
   void addMarkers();
 
-  visualization_msgs::InteractiveMarker createMarker(geometry_msgs::PoseStamped pose);
+  visualization_msgs::InteractiveMarker createMarker(geometry_msgs::PoseStamped pose, std::string visible_description);
 
   void onClick(const visualization_msgs::InteractiveMarkerFeedbackConstPtr &f);
 };
