@@ -11,8 +11,9 @@ class CantStopWontStop:
     first_msg_ = True
     num_goals_ = 14
     last_goal_ = 0
-    current_goal_ = -1
+    current_goal_ = ""
     goals_visited_ = 0
+    name = "[CantStopWontStop] "
 
     def __init__(self):
         self.pub = rospy.Publisher('nav_points/goal_number', Int32, queue_size=10)
@@ -21,7 +22,9 @@ class CantStopWontStop:
         rospy.Subscriber('/move_base/status', GoalStatusArray, self.callback)
 
         self.num_goals_= len(rospy.get_param('/nav_points/nav_points'))
-        rospy.loginfo("found " + str(self.num_goals_) + " goals.")
+        self.wait_for_confirmation_ = rospy.get_param('/nav_points/wait_for_confirmation', False)
+        rospy.loginfo(self.name + "found " + str(self.num_goals_) + " goals.")
+        rospy.loginfo(self.name + "Wait for confirmation: " + str(self.wait_for_confirmation_))
 
     def callback(self, msg):
         if self.first_msg_:
@@ -42,8 +45,13 @@ class CantStopWontStop:
                 while (new_goal == self.last_goal_):
                     new_goal = random.randint(0,self.num_goals_ - 1)
 
-                rospy.logwarn('Goal reached (' + str(self.goals_visited_) + ' so far)! Setting new goal to ' + str(new_goal))
+                rospy.logwinfo(self.name + 'Goal reached (' + str(self.goals_visited_) + ' so far)! Setting new goal to ' + str(new_goal))
                 self.goals_visited_ += 1
+
+                if (self.wait_for_confirmation_):
+                    rospy.logwarn(name + "Press enter to set next goal!\n")
+                    raw_input()
+
                 self.pub.publish(new_goal)
 
                 self.last_goal_ = new_goal
