@@ -10,6 +10,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <depend>dynamic_reconfigure</depend>
   <depend>geometry_msgs</depend>
   <depend>interactive_markers</depend>
   <depend>roscpp</depend>

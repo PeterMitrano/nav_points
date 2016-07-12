@@ -5,6 +5,7 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 find_package(catkin REQUIRED COMPONENTS
+  dynamic_reconfigure
   geometry_msgs
   interactive_markers
   roscpp
@@ -12,10 +13,12 @@ find_package(catkin REQUIRED COMPONENTS
   visualization_msgs
 )
 
+generate_dynamic_reconfigure_options(cfg/CantStopWontStop.cfg)
+
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES nav_points
-  CATKIN_DEPENDS geometry_msgs roscpp std_msgs visualization_msgs
+  CATKIN_DEPENDS dynamic_reconfigure geometry_msgs roscpp std_msgs visualization_msgs
 )
 
 include_directories(
