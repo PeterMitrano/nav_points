@@ -45,7 +45,8 @@ class CantStopWontStop:
                 self.current_goal_ = oldest_msg.goal_id.id
 
                 # ensure no repeats
-                new_goal = random.randint(0,self.num_goals_)
+                # -1 because randint is inclusive on both ends
+                new_goal = random.randint(0,self.num_goals_ - 1)
                 while (new_goal == self.last_goal_):
                     new_goal = random.randint(0,self.num_goals_ - 1)
 
