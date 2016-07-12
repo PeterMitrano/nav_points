@@ -34,8 +34,9 @@ class CantStopWontStop:
         rospy.loginfo(self.name + "wait_for_confirmation: " + str(self.wait_for_confirmation_))
 
     def reconfigureCallback(self, config, level):
-       rospy.loginfo("""Reconfigure Request: {int_param}, {double_param},\
-               {str_param}, {bool_param}, {size}""".format(**config))
+       self.pause_time_ = config.pause_time
+       self.wait_for_confirmation_ = config.wait_for_confirmation
+       return config
 
     def moveBaseCallback(self, msg):
         if self.first_msg_:
