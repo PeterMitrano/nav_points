@@ -15,6 +15,7 @@ NavPoints::NavPoints() : server_("nav_points") {
 
   goal_pub_ =
       private_nh.advertise<geometry_msgs::PoseStamped>(goal_topic, 10, false);
+  goal_sub_ = private_nh.subscribe("goal_number", 10, &NavPoints::goalCallback, this);
 
   // iterate through all points loaded
   // on parameter server and add markers
@@ -86,6 +87,11 @@ visualization_msgs::InteractiveMarker NavPoints::createMarker(geometry_msgs::Pos
   return int_marker;
 }
 
+void NavPoints::goalCallback(const std_msgs::Int32& msg)
+{
+  geometry_msgs::PoseStamped goal = points_.at(msg.data);
+  goal_pub_.publish(goal);
+}
 
 void NavPoints::loadPoints() {
   for (int i = 0; i < param_points_.size(); i++) {

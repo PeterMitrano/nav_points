@@ -2,4 +2,7 @@
   <node name="nav_points" type="nav_points" pkg="nav_points">
     <rosparam command="load" file="$(find nav_points)/config/rail_pts.yaml"/>
   </node>
+  <node name="cant_stop_wont_stop" type="cant_stop_wont_stop" pkg="nav_points">
+    <remap from="/move_base/status" to="/move_base_navi/status"/>
+  </node>
 </launch>

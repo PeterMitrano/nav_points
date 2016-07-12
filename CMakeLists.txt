@@ -8,13 +8,14 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   interactive_markers
   roscpp
+  std_msgs
   visualization_msgs
 )
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES nav_points
-  CATKIN_DEPENDS geometry_msgs roscpp visualization_msgs
+  CATKIN_DEPENDS geometry_msgs roscpp std_msgs visualization_msgs
 )
 
 include_directories(

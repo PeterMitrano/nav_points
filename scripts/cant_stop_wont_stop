@@ -1,0 +1,53 @@
+#!/usr/bin/python
+
+import rospy
+import random
+from std_msgs.msg import Int32
+from actionlib_msgs.msg import GoalStatusArray
+from actionlib_msgs.msg import GoalStatus
+
+class CantStopWontStop:
+
+    first_msg_ = True
+    num_goals_ = 14
+    last_goal_ = 0
+    current_goal_ = -1
+    goals_visited_ = 0
+
+    def __init__(self):
+        self.pub = rospy.Publisher('nav_points/goal_number', Int32, queue_size=10)
+        rospy.init_node('cant_stop_wont_stop', anonymous=True)
+
+        rospy.Subscriber('/move_base/status', GoalStatusArray, self.callback)
+
+        self.num_goals_= len(rospy.get_param('/nav_points/nav_points'))
+        rospy.loginfo("found " + str(self.num_goals_) + " goals.")
+
+    def callback(self, msg):
+        if self.first_msg_:
+            self.first_msg_ = False
+            if len(msg.status_list) > 0:
+                self.current_goal_ = msg.status_list[0].goal_id.id
+
+        if len(msg.status_list) == 0:
+            return
+
+        oldest_msg = msg.status_list[0]
+        if oldest_msg.status == GoalStatus.SUCCEEDED:
+            if oldest_msg.goal_id.id != self.current_goal_:
+                self.current_goal_ = oldest_msg.goal_id.id
+
+                # ensure no repeats
+                new_goal = random.randint(0,self.num_goals_))
+                while (new_goal == last_goal_):
+                    new_goal = random.randint(0,self.num_goals_))
+
+                rospy.logwarn('Goal reached (' + str(goals_visited_) + ' so far)! Setting new goal to ' + str( new_goal))
+                goals_visited_ += 1
+                self.pub.publish(new_goal)
+
+                last_goal_ = new_goal
+
+if __name__ == '__main__':
+    csws = CantStopWontStop()
+    rospy.spin()
