@@ -23,8 +23,12 @@ class CantStopWontStop:
 
         self.num_goals_= len(rospy.get_param('/nav_points/nav_points'))
         self.wait_for_confirmation_ = rospy.get_param('/nav_points/wait_for_confirmation', False)
-        rospy.loginfo(self.name + "found " + str(self.num_goals_) + " goals.")
-        rospy.loginfo(self.name + "Wait for confirmation: " + str(self.wait_for_confirmation_))
+        self.pause_time_ = rospy.get_param('/nav_points/pause_time', 5)
+
+        # print configuration
+        rospy.loginfo(self.name + "num_goals: " + str(self.num_goals_))
+        rospy.loginfo(self.name + "pause_time: " + str(self.pause_time_) + "s")
+        rospy.loginfo(self.name + "wait_for_confirmation: " + str(self.wait_for_confirmation_))
 
     def callback(self, msg):
         if self.first_msg_:
@@ -45,11 +49,14 @@ class CantStopWontStop:
                 while (new_goal == self.last_goal_):
                     new_goal = random.randint(0,self.num_goals_ - 1)
 
-                rospy.logwinfo(self.name + 'Goal reached (' + str(self.goals_visited_) + ' so far)! Setting new goal to ' + str(new_goal))
+                rospy.loginfo(self.name + 'Goal reached (' + str(self.goals_visited_) + ' so far)! Setting new goal to ' + str(new_goal))
                 self.goals_visited_ += 1
 
+                # wait the specified time
+                rospy.sleep(self.pause_time_)
+
                 if (self.wait_for_confirmation_):
-                    rospy.logwarn(name + "Press enter to set next goal!\n")
+                    rospy.logwarn(self.name + "Press enter to set next goal!\n")
                     raw_input()
 
                 self.pub.publish(new_goal)
