@@ -25,7 +25,7 @@ class CantStopWontStop:
         rospy.Subscriber('/move_base/status', GoalStatusArray, self.moveBaseCallback)
 
         self.num_goals_= len(rospy.get_param('/nav_points/nav_points'))
-        self.wait_for_confirmation_ = rospy.get_param('/nav_points/wait_for_confirmation', False)
+        self.wait_for_confirmation_ = rospy.get_param('/cant_stop_wont_stop/wait_for_confirmation', True)
         self.pause_time_ = rospy.get_param('/nav_points/pause_time', 5)
 
         # print configuration
