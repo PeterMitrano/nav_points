@@ -43,6 +43,7 @@ void NavPoints::onClick(const visualization_msgs::InteractiveMarkerFeedbackConst
     goal_pub_.publish(goal);
 
     int id;
+    ROS_INFO("name: %s", f->marker_name.c_str());
     sscanf(f->marker_name.c_str(), "loc:%i", &id);
     std_msgs::Int32 id_msg;
     id_msg.data = id;
@@ -70,8 +71,7 @@ visualization_msgs::InteractiveMarker NavPoints::createMarker(geometry_msgs::Pos
   int_marker.pose.position.z += 0.01; //a little off the ground.
   int_marker.scale = 1;
   char buff[20];
-  snprintf(buff, 20, "pt_%2.2f_%2.2f", pose.pose.position.x, pose.pose.position.y);
-  int_marker.name = buff;
+  int_marker.name = visible_description;
   int_marker.description = visible_description;
 
   visualization_msgs::InteractiveMarkerControl control;
