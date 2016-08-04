@@ -43,7 +43,6 @@ void NavPoints::onClick(const visualization_msgs::InteractiveMarkerFeedbackConst
     goal_pub_.publish(goal);
 
     int id;
-    ROS_INFO("name: %s", f->marker_name.c_str());
     sscanf(f->marker_name.c_str(), "loc:%i", &id);
     std_msgs::Int32 id_msg;
     id_msg.data = id;
