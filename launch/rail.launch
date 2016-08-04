@@ -1,5 +1,5 @@
 <launch>
-  <arg name="pts_file" default="$(find nav_points)/config/rail_pts.yaml"/>
+  <arg name="pts_file" default="$(find nav_points)/config/ccb2_pts.yaml"/>
   <node name="nav_points" type="nav_points" pkg="nav_points">
     <rosparam command="load" file="$(arg pts_file)"/>
   </node>

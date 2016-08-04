@@ -1,5 +1,7 @@
-#include <tf/transform_datatypes.h>
 #include "nav_points/nav_points.h"
+
+#include <tf/transform_datatypes.h>
+#include <std_msgs/Int32.h>
 #include <XmlRpcException.h>
 
 namespace nav_points {
@@ -10,11 +12,10 @@ NavPoints::NavPoints() : server_("nav_points") {
   std::string goal_topic;
 
   // this is where we will publish our goals to
-  private_nh.param<std::string>("goal_topic", goal_topic,
-                                "/move_base_simple/goal");
+  private_nh.param<std::string>("goal_topic", goal_topic, "/move_base_simple/goal");
 
-  goal_pub_ =
-      private_nh.advertise<geometry_msgs::PoseStamped>(goal_topic, 10, false);
+  goal_pub_ = private_nh.advertise<geometry_msgs::PoseStamped>(goal_topic, 10, false);
+  goal_id_pub_ = private_nh.advertise<std_msgs::Int32>("goal_id", 10, true);
   goal_sub_ = private_nh.subscribe("goal_number", 10, &NavPoints::goalCallback, this);
 
   // iterate through all points loaded
@@ -40,6 +41,12 @@ void NavPoints::onClick(const visualization_msgs::InteractiveMarkerFeedbackConst
     goal.header.frame_id = "map";
     goal.pose = f->pose;
     goal_pub_.publish(goal);
+
+    int id;
+    sscanf(f->marker_name.c_str(), "loc:%i", &id);
+    std_msgs::Int32 id_msg;
+    id_msg.data = id;
+    goal_id_pub_.publish(id_msg);
   }
 }
 
@@ -91,6 +98,8 @@ void NavPoints::goalCallback(const std_msgs::Int32& msg)
 {
   geometry_msgs::PoseStamped goal = points_.at(msg.data);
   goal_pub_.publish(goal);
+
+  goal_id_pub_.publish(msg);
 }
 
 void NavPoints::loadPoints() {

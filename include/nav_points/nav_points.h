@@ -12,6 +12,7 @@ public:
 private:
   interactive_markers::InteractiveMarkerServer server_;
   ros::Publisher goal_pub_;
+  ros::Publisher goal_id_pub_;
   ros::Subscriber goal_sub_;
   XmlRpc::XmlRpcValue param_points_;
   std::vector<geometry_msgs::PoseStamped> points_;
