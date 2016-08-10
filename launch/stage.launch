@@ -2,4 +2,8 @@
   <node name="nav_points" type="nav_points" pkg="nav_points" output="screen">
     <rosparam command="load" file="$(find nav_points)/config/stage_pts.yaml"/>
   </node>
+  <node name="cant_stop_wont_stop" type="cant_stop_wont_stop" pkg="nav_points" output="screen">
+    <param name="pause_time" value="1"/>
+    <param name="wait_for_confirmation" value="False"/>
+  </node>
 </launch>
